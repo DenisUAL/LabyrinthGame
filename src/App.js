@@ -2,13 +2,22 @@ import React, { useState, useEffect } from "react";
 import Board from "./components/Board";
 import Modal from "./components/Modal";
 import MoveCard from "./components/MoveCard";
-import { generateMoves } from "./utils";
+import Scores from "./components/Scores";
+import Settings from "./components/Settings";
+import {
+  generateMoves,
+  readGameSettings,
+  generateStartPosition,
+} from "./utils";
 
 function App() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isScores, setIsScores] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
   const [moves, setMoves] = useState([]);
+  const [bs, setBs] = useState(readGameSettings().boardSize);
+  const [nom, setNom] = useState(readGameSettings().numberOfMoves);
+  const [startPos, setStartPos] = useState();
 
   const openModal = () => {
     setModalOpen(true);
@@ -30,12 +39,21 @@ function App() {
   };
 
   const startNewGame = () => {
-    setMoves(generateMoves());
+    let movesArr = generateMoves(nom);
+    let start = generateStartPosition(bs);
+    setMoves(movesArr);
+    setStartPos(start);
   };
 
   useEffect(() => {
+    let { boardSize, numberOfMoves } = readGameSettings();
+    setBs(boardSize);
+    setNom(numberOfMoves);
+  }, [isModalOpen]);
+
+  useEffect(() => {
     if (!moves.length) {
-      setMoves(generateMoves());
+      setMoves(generateMoves(nom));
     }
   });
 
@@ -54,18 +72,20 @@ function App() {
           </button>
         </div>
         <div className="col">
-          <Board size={3} />
+          <Board size={bs} moves={moves} start={startPos} />
         </div>
         <div className="col">
           <h1>Moves:</h1>
-          {moves.length &&
-            moves.map((move, index) => (
-              <MoveCard key={index} direction={move} />
-            ))}
+          <div className="moves-container">
+            {moves.length &&
+              moves.map((move, index) => (
+                <MoveCard key={index} index={index} direction={move} />
+              ))}
+          </div>
         </div>
       </div>
       <Modal handleClose={closeModal} show={isModalOpen}>
-        {isScores ? <h1>Scores table</h1> : <h1>Settings modal</h1>}
+        {isScores ? <Scores /> : <Settings />}
       </Modal>
     </div>
   );

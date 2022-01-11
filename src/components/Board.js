@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
+import { createBoardElements, checkUserAnswer } from "../utils";
 
-export default function Board({ size = 3 }) {
+export default function Board({ size, start, moves }) {
   const [boardElems, setBoardElems] = useState([]);
 
   useEffect(() => {
-    const style = { width: `${100 / size}%`, height: `${100 / size}%` };
-    const tempBoardElems = [];
-    for (let i = 1; i <= Math.pow(size, 2); i++) {
-      tempBoardElems.push(<div className="box" style={style} key={i}></div>);
-
-      setBoardElems(tempBoardElems);
-    }
-  }, [size]);
+    setBoardElems(createBoardElements(size, start));
+  }, [size, start]);
 
   return (
-    <div className="board">
+    <div
+      className="board"
+      onClick={(e) => {
+        const answer = Number.parseInt(e.target.attributes.index.nodeValue);
+        checkUserAnswer(start, answer, moves, size)
+          ? alert("Congratulations, u win!")
+          : alert("U LOOOOOSE!");
+      }}
+    >
       {boardElems.length && boardElems.map((elem) => elem)}
     </div>
   );

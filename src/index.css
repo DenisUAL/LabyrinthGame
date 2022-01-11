@@ -65,7 +65,7 @@ body {
   position: fixed;
   background: white;
   border-radius: 1%;
-  width: 80%;
+  width: max(60%, 650px);
   min-height: 500px;
   top: 50%;
   left: 50%;
@@ -98,13 +98,27 @@ body {
   justify-content: flex-start;
 }
 
+.move-card-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.moves-container {
+  display: flex;
+  flex-direction: column;
+  width: max(150px, 30vw);
+  height: max(30vw, 400px);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .board {
   position: relative;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  margin: auto;
+  margin: 20px;
 
   display: flex;
   flex-wrap: wrap;
@@ -120,6 +134,25 @@ body {
 .box {
   font-size: 8vw;
   border: 1px solid black;
+}
+
+.box:hover {
+  font-size: 8vw;
+  background-color: lightblue;
+}
+
+.start{
+  background-color: rgba(40, 131, 63, 0.76);
+}
+
+.step{
+  background-color: rgba(170, 204, 46, 0.76);
+}
+
+.settings-container {
+  padding: 50px;
+  min-height: 400px;
+  min-width: 600px;
 }
 
 @media screen and (min-width: 480px) {
