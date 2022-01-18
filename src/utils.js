@@ -15,6 +15,14 @@ export function generateMoves(numberOfMoves = 10) {
   return arr;
 }
 
+export function calculateGameTime(startTime) {
+  const elapsedMS = Date.now() - startTime;
+  const minutes = Math.floor(elapsedMS / 60000);
+  const seconds = elapsedMS / 1000;
+  const elapsedTimeString = `${minutes}:${seconds}`;
+  return elapsedTimeString;
+}
+
 export function generateStartPosition(size) {
   return Math.ceil(Math.random() * Math.pow(size, 2)) - 1;
 }
@@ -24,20 +32,22 @@ export function checkUserAnswer(startIndex, userAnswer, movesArr, size) {
   movesArr.forEach((move) => {
     correctAnswer = makeMove(correctAnswer, size, move);
   });
-  return correctAnswer == userAnswer;
+  return {
+    isAnswerCorrect: correctAnswer == userAnswer,
+    correctAnswer,
+  };
 }
 
 export function createBoardElements(size, startElem) {
   const style = { width: `${100 / size}%`, height: `${100 / size}%` };
   const boardElems = [];
   for (let i = 0; i < Math.pow(size, 2); i++) {
-    let element =
-      i === startElem ? (
-        <div className="box start" style={style} index={i} key={i + 1}></div>
-      ) : (
-        <div className="box" style={style} index={i} key={i + 1}></div>
-      );
-    boardElems.push(element);
+    const elemProps =
+      i === startElem
+        ? { cellStatus: "start", key: i, style, index: i }
+        : { key: i, style, index: i };
+
+    boardElems.push(elemProps);
   }
   return boardElems;
 }
@@ -65,6 +75,22 @@ export function makeMove(startIndex, boardSize, move) {
       }
       return startIndex + boardSize;
   }
+}
+
+export function readScores() {
+  const scores = localStorage.getItem("scores");
+  return scores ? JSON.parse(scores) : [];
+}
+
+export function writeScore(win, time) {
+  const scores = readScores();
+  const settings = readGameSettings();
+  const newRecord = { savedAt: Date.now(), win, time, ...settings };
+  localStorage.setItem("scores", JSON.stringify([...scores, newRecord]));
+}
+
+export function clearScores() {
+  localStorage.setItem("scores", JSON.stringify([]));
 }
 
 export function readGameSettings() {

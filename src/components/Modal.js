@@ -1,16 +1,37 @@
 import React from "react";
+import { readScores } from "../utils";
 
-export default function Modal({ handleClose, show, children }) {
+export default function Modal({
+  handleClose,
+  show,
+  children,
+  openModal,
+  startNewGame,
+  modalID,
+}) {
   const showHideClassName = show ? "modal display-block" : "modal display-none";
 
   return (
-    <div className={showHideClassName}>
-      <section className="modal-main">
+    <div id="modal" className={showHideClassName}>
+      <div className="modal-main">
         {children}
-        <button type="button" onClick={handleClose}>
-          Close
-        </button>
-      </section>
+        <i className="modal-btn" onClick={handleClose} />
+        <div className="modal-btn-container">
+          <button className="btn" onClick={startNewGame}>
+            {readScores().length ? "Try again" : "Start new game"}
+          </button>
+          {modalID != "scores" && (
+            <button className="btn" onClick={() => openModal("scores")}>
+              Score table
+            </button>
+          )}
+          {modalID != "settings" && (
+            <button className="btn" onClick={() => openModal("settings")}>
+              Settings
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

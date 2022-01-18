@@ -13,6 +13,46 @@ code {
 }
 /* -------------------------------------- */
 
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes slideIn {
+  from {
+    bottom: -300px;
+    opacity: 0;
+  }
+  to {
+    bottom: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    bottom: -300px;
+    opacity: 0;
+  }
+  to {
+    bottom: 0;
+    opacity: 1;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -26,10 +66,15 @@ body {
   text-align: center;
 }
 
-/* h1 {
-  font-size: 1.5rem;
-  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.75);
-} */
+th {
+  font-size: 24px;
+  padding: 15px;
+}
+
+td {
+  height: 25px;
+  padding: 5px 10px;
+}
 
 .move-card {
   display: flex;
@@ -52,24 +97,50 @@ body {
   font-size: 18px;
 }
 
+.modal-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-image: url("../public/close.png");
+  background-size: contain;
+}
+
+.modal-btn:hover {
+  box-shadow: 0 0 17px 3px #2809098c;
+}
+
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  -webkit-animation-name: fadeIn; /* Fade in the background */
+  -webkit-animation-duration: 1.2s;
 }
 
 .modal-main {
   position: fixed;
   background: white;
-  border-radius: 1%;
+  border-radius: 2%;
   width: max(60%, 650px);
+  overflow-y: hidden;
+  max-height: 800px;
   min-height: 500px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.modal-btn-container {
+  position: absolute;
+  width: 100%;
+  bottom: 0%;
 }
 
 .display-block {
@@ -123,11 +194,11 @@ body {
   display: flex;
   flex-wrap: wrap;
   border: 4vw solid transparent;
-  max-width: 480px;
-  max-height: 480px;
+  max-width: 680px;
+  max-height: 680px;
   width: 100vw;
   height: 100vw;
-  box-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 20px 2px rgb(0 0 0 / 75%);
   font-size: 0;
 }
 
@@ -138,27 +209,80 @@ body {
 
 .box:hover {
   font-size: 8vw;
-  background-color: lightblue;
+  box-shadow: inset 0px 0px 6px 0px rgb(0 0 0 / 75%);
 }
 
-.start{
-  background-color: rgba(40, 131, 63, 0.76);
+.start {
+  background-image: url("../public/start.png");
+  background-size: contain;
 }
 
-.step{
-  background-color: rgba(170, 204, 46, 0.76);
+.modal-img {
+  width: 250px;
+  height: 250px;
+}
+
+.correct-finish {
+  background-color: rgb(53, 240, 6, 0.5);
+  background-image: url("../public/finish.png");
+  background-size: contain;
+}
+
+.wrong-finish {
+  background-color: rgb(240, 53, 6, 0.5);
+  background-image: url("../public/finish.png");
+  background-size: contain;
+}
+
+.step {
+  box-shadow: inset 0px 0px 12px 4px rgb(53, 240, 6);
+}
+
+.step:hover {
+  box-shadow: inset 0px 0px 12px 4px rgb(53, 240, 6);
+}
+
+.wrong-step {
+  box-shadow: inset 0px 0px 12px 4px rgb(240, 53, 6);
+}
+
+.wrong-step:hover {
+  box-shadow: inset 0px 0px 12px 4px rgb(240, 53, 6);
 }
 
 .settings-container {
+  margin: auto;
   padding: 50px;
   min-height: 400px;
   min-width: 600px;
 }
 
+.scores-container {
+  margin: auto;
+  overflow-y: scroll;
+  padding: 0 10px 20px 10px;
+  height: 80%;
+  min-width: 95%;
+}
+
+.table-row {
+  padding: 10px;
+  margin: 10px;
+  width: 100%;
+}
+
+.win {
+  background-color: rgb(53, 240, 6, 0.4);
+}
+
+.lose {
+  background-color: rgb(240, 53, 6, 0.4);
+}
+
 @media screen and (min-width: 480px) {
   .board {
     border: 18px solid transparent;
-    box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 20px 2px rgb(0 0 0 / 75%);
   }
   .box {
     font-size: 2.5rem;
